@@ -1,23 +1,28 @@
 import discord
+from discord.ext import commands
 import os
 
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f"{client.user} est en ligne !")
+    print(f"{bot.user} est en ligne !")
 
-@client.event
-async def on_member_join(member):
-    channel = discord.utils.get(member.guild.text_channels, name="joins")
-    if channel:
-        await channel.send(
-            f"Salut {member.mention}, bienvenue sur **{member.guild.name}** !\n"
-            f"Nous sommes désormais **{member.guild.member_count}** membres sur le serveur."
-        )     
-import os
+@bot.command()
+async def lookup(ctx, user: discord.User):
+    embed = discord.Embed(title="Lookup Discord")
+    embed.add_field(name="Pseudo", value=str(user), inline=False)
+    embed.add_field(name="ID", value=user.id, inline=False)
+    embed.add_field(
+        name="Compte créé le",
+        value=user.created_at.strftime("%d/%m/%Y %H:%M"),
+        inline=False
+    )
+    embed.set_thumbnail(url=user.display_avatar.url)
+    await ctx.send(embed=embed)
 
 bot.run(os.getenv("TOKEN"))
