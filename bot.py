@@ -13,8 +13,12 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
+<<<<<<< HEAD
     channel = member.guild.get_channel(1521999167252074627)  
 
+=======
+    channel = member.guild.get_channel(1521999167252074627)
+>>>>>>> 02ffe90 (Correction bot bienvenue)
     if channel:
         await channel.send(
             f"👋 Selem {member.mention} sur **{member.guild.name}** !\n"
